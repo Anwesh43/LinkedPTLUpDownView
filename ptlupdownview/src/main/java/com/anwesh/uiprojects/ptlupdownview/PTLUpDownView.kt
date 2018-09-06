@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.ptlupdownview
  * Created by anweshmishra on 07/09/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.graphics.Canvas
@@ -185,6 +186,14 @@ class PTLUpDownView(ctx : Context) : View(ctx) {
             lptlud.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : PTLUpDownView {
+            val view : PTLUpDownView = PTLUpDownView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
