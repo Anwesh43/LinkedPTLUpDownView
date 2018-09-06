@@ -164,4 +164,26 @@ class PTLUpDownView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : PTLUpDownView) {
+
+        private val animator : Animator = Animator(view)
+        private val lptlud : LinkedPTLUD = LinkedPTLUD(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            lptlud.draw(canvas, paint)
+            animator.animate {
+                lptlud.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lptlud.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
