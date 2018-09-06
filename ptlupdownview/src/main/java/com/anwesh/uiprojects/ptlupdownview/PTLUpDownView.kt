@@ -30,8 +30,8 @@ fun Canvas.drawPTLUDNode(i : Int, scale : Float, paint : Paint) {
     translate(gap/4 + gap/2 + gap * i, h/2 + (h/2 - size/2) * sc2 * sf)
     for (j in 0..1) {
         save()
-        rotate(90f * (1 - sc1) * sf)
-        drawLine(-size/2, 0f, size/2, 0f, paint)
+        rotate(90f * (1 - sc1) * sf * j)
+        drawLine(0f, -size/2, 0f, size/2, paint)
         restore()
     }
     restore()
@@ -146,11 +146,12 @@ class PTLUpDownView(ctx : Context) : View(ctx) {
     }
 
     data class LinkedPTLUD(var i : Int) {
-        private var curr : PTLUDNode = PTLUDNode(0)
+        private var root : PTLUDNode = PTLUDNode(0)
+        private var curr : PTLUDNode = root
         private var dir : Int = 1
 
         fun draw(canvas : Canvas, paint : Paint) {
-            curr.draw(canvas, paint)
+            root.draw(canvas, paint)
         }
 
         fun update(cb : (Int, Float) -> Unit) {
