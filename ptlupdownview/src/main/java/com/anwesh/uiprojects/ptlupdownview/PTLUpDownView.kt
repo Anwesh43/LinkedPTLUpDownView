@@ -98,4 +98,48 @@ class PTLUpDownView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class PTLUDNode(var i : Int, val state : State = State()) {
+        private var next : PTLUDNode? = null
+        private var prev  : PTLUDNode? = null
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = PTLUDNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        init {
+            addNeighbor()
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawPTLUDNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit)  : PTLUDNode {
+            var curr : PTLUDNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+
+    }
 }
